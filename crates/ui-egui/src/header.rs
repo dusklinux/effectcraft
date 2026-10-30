@@ -65,7 +65,11 @@ fn brand_and_home(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter
 
     if !app.ui.show_menu_bar {
         let menu_btn = Rect::from_min_size(pos2(x, cy - 13.0), vec2(26.0, 26.0));
-        let tip = format!("{} ({})", tr("Show Menu Bar"), crate::menus::shortcut_text("Cmd+Alt+M"));
+        let label = tr("Show Menu Bar");
+        let tip = match app.session.shortcuts().shortcut_of("view.menuBar", &serde_json::Value::Null) {
+            Some(s) => format!("{label} ({})", crate::menus::shortcut_text(s)),
+            None => label.to_string(),
+        };
         let menu_resp = widgets::icon_button(ui, menu_btn, Icon::Hamburger, false, &t, egui::Id::unique("hdr-show-menu-bar")).on_hover_text(tip);
         app.auto.add_response("header.showMenuBar", &menu_resp, "Show Menu Bar");
         if menu_resp.clicked() {

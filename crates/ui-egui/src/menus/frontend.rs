@@ -263,6 +263,9 @@ pub fn frontend(app: &mut EffectcraftApp, ctx: &egui::Context, id: &str, p: Valu
             }
             #[cfg(target_os = "macos")]
             {
+                if app.session.prefs.appearance.show_menu_bar {
+                    app.session.prefs.appearance.in_window_menu_bar_mac = true;
+                }
                 app.ui.show_menu_bar = app.session.prefs.appearance.in_window_menu_bar_mac && app.session.prefs.appearance.show_menu_bar;
             }
             app.session.save_prefs();

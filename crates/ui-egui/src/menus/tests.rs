@@ -428,8 +428,19 @@ fn menu_items_cover_the_tree() {
 fn view_menu_bar_toggles_show_menu_bar() {
     let mut app = EffectcraftApp::new(effectcraft_engine::Session::default());
     assert_eq!(app.session.shortcuts().shortcut_of("view.menuBar", &Value::Null), Some("Cmd+Alt+M"));
-    assert!(app.ui.show_menu_bar);
-    assert!(app.session.prefs.appearance.show_menu_bar);
+    #[cfg(target_os = "macos")]
+    {
+        // By default on macOS, native NSMenu is used and in-window menu bar is hidden.
+        assert!(!app.ui.show_menu_bar);
+        app.session.prefs.appearance.in_window_menu_bar_mac = true;
+        app.session.prefs.appearance.show_menu_bar = true;
+        app.ui.show_menu_bar = true;
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        assert!(app.ui.show_menu_bar);
+        assert!(app.session.prefs.appearance.show_menu_bar);
+    }
     let ctx = egui::Context::default();
     invoke(&mut app, &ctx, "view.menuBar", json!({})).unwrap();
     assert!(!app.ui.show_menu_bar);

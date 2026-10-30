@@ -24,6 +24,14 @@ impl EffectcraftApp {
         self.ui.cache_when_idle = p.previews.cache_frames_when_idle;
         self.ui.viewer.fast_preview = p.previews.fast_previews;
         self.frames.set_budget(p.cache_budgets(self.session.sys_memory).preview);
+        #[cfg(not(target_os = "macos"))]
+        {
+            self.ui.show_menu_bar = p.appearance.show_menu_bar;
+        }
+        #[cfg(target_os = "macos")]
+        {
+            self.ui.show_menu_bar = p.appearance.in_window_menu_bar_mac && p.appearance.show_menu_bar;
+        }
     }
 
     /// Change settings from the UI (applied next frame and saved).
