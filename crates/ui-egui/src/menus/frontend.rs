@@ -255,6 +255,7 @@ pub fn frontend(app: &mut EffectcraftApp, ctx: &egui::Context, id: &str, p: Valu
         "view.grid" => toggle(&mut v.grid, &p),
         "view.snapToGrid" => toggle(&mut v.snap_grid, &p),
         "view.layerControls" => toggle(&mut v.show_layer_controls, &p),
+        "view.menuBar" => toggle(&mut app.ui.show_menu_bar, &p),
         "view.options" => {
             app.dialog = Some(crate::Dialog::ViewOptions);
             Value::Null
