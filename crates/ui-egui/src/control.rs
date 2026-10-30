@@ -291,6 +291,8 @@ fn set_ui_layout(app: &mut EffectcraftApp, p: &Value) -> Outcome {
     }
     if let Some(b) = p.get("menuBar").and_then(Value::as_bool) {
         app.ui.show_menu_bar = b;
+        app.session.prefs.appearance.show_menu_bar = b;
+        app.session.save_prefs();
     }
     // Project panel optional columns, e.g. ["type", "duration", "path", "comment"].
     if let Some(Value::Array(a)) = p.get("projectColumns") {

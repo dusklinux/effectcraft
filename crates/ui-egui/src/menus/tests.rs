@@ -427,15 +427,20 @@ fn menu_items_cover_the_tree() {
 #[test]
 fn view_menu_bar_toggles_show_menu_bar() {
     let mut app = EffectcraftApp::new(effectcraft_engine::Session::default());
+    assert_eq!(app.session.shortcuts().shortcut_of("view.menuBar", &Value::Null), Some("Cmd+Alt+M"));
     assert!(app.ui.show_menu_bar);
+    assert!(app.session.prefs.appearance.show_menu_bar);
     let ctx = egui::Context::default();
     invoke(&mut app, &ctx, "view.menuBar", json!({})).unwrap();
     assert!(!app.ui.show_menu_bar);
+    assert!(!app.session.prefs.appearance.show_menu_bar);
     invoke(&mut app, &ctx, "view.menuBar", json!({})).unwrap();
     assert!(app.ui.show_menu_bar);
+    assert!(app.session.prefs.appearance.show_menu_bar);
     invoke(&mut app, &ctx, "view.menuBar", json!({"value": false})).unwrap();
     assert!(!app.ui.show_menu_bar);
+    assert!(!app.session.prefs.appearance.show_menu_bar);
     invoke(&mut app, &ctx, "view.menuBar", json!({"value": true})).unwrap();
     assert!(app.ui.show_menu_bar);
+    assert!(app.session.prefs.appearance.show_menu_bar);
 }
-

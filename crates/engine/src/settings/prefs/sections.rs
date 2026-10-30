@@ -122,6 +122,8 @@ page!(Appearance {
     use_gradients: bool = true,
     /// macOS: draw the menu bar inside the window instead of the system menu bar.
     in_window_menu_bar_mac: bool = false,
+    /// Draw the top menu bar (shown by default).
+    show_menu_bar: bool = true,
 });
 
 page!(Grids {

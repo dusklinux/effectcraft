@@ -27,6 +27,14 @@ impl EffectcraftApp {
     pub fn new(session: Session) -> Self {
         let mut ui = UiState::default();
         let workspace_store = workspace_state::WorkspaceStore::load(session.config.as_deref(), &mut ui);
+        #[cfg(not(target_os = "macos"))]
+        {
+            ui.show_menu_bar = session.prefs.appearance.show_menu_bar;
+        }
+        #[cfg(target_os = "macos")]
+        {
+            ui.show_menu_bar = session.prefs.appearance.in_window_menu_bar_mac && session.prefs.appearance.show_menu_bar;
+        }
         EffectcraftApp {
             session,
             ui,
