@@ -256,20 +256,8 @@ pub fn frontend(app: &mut EffectcraftApp, ctx: &egui::Context, id: &str, p: Valu
         "view.snapToGrid" => toggle(&mut v.snap_grid, &p),
         "view.layerControls" => toggle(&mut v.show_layer_controls, &p),
         "view.menuBar" => {
-            let res = toggle(&mut app.session.prefs.appearance.show_menu_bar, &p);
-            #[cfg(not(target_os = "macos"))]
-            {
-                app.ui.show_menu_bar = app.session.prefs.appearance.show_menu_bar;
-            }
-            #[cfg(target_os = "macos")]
-            {
-                if app.session.prefs.appearance.show_menu_bar {
-                    app.session.prefs.appearance.in_window_menu_bar_mac = true;
-                }
-                app.ui.show_menu_bar = app.session.prefs.appearance.in_window_menu_bar_mac && app.session.prefs.appearance.show_menu_bar;
-            }
-            app.session.save_prefs();
-            res
+            let value = p.get("value").and_then(Value::as_bool);
+            json!(app.set_menu_bar(value))
         }
         "view.options" => {
             app.dialog = Some(crate::Dialog::ViewOptions);
