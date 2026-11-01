@@ -49,7 +49,7 @@ fn brand_and_home(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter
     bresp.context_menu(|ui| {
         let mut show_mb = app.ui.show_menu_bar;
         if ui.checkbox(&mut show_mb, tr("Menu Bar")).clicked() {
-            let _ = app.session.execute("view.menuBar", json!({"value": show_mb}));
+            app.set_menu_bar(Some(show_mb));
             ui.close();
         }
     });
@@ -73,7 +73,7 @@ fn brand_and_home(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter
         let menu_resp = widgets::icon_button(ui, menu_btn, Icon::Hamburger, false, &t, egui::Id::unique("hdr-show-menu-bar")).on_hover_text(tip);
         app.auto.add_response("header.showMenuBar", &menu_resp, "Show Menu Bar");
         if menu_resp.clicked() {
-            let _ = app.session.execute("view.menuBar", json!({"value": true}));
+            app.set_menu_bar(Some(true));
         }
         x += 30.0;
     }

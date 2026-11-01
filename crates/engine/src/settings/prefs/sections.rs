@@ -396,11 +396,6 @@ impl Appearance {
     }
 }
 
-/// Whether the in-window menu bar is shown for `appearance` on the current platform.
-pub fn menu_bar_shown(appearance: &Appearance) -> bool {
-    appearance.menu_bar_shown()
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -439,5 +434,17 @@ mod tests {
         assert!(!shown);
         assert!(!other.show_menu_bar);
         assert!(!other.in_window_menu_bar_mac);
+    }
+
+    #[test]
+    fn appearance_menu_bar_persistence_roundtrip() {
+        let mut appearance = Appearance::default();
+        appearance.set_menu_bar_shown_on(false, false);
+        appearance.set_menu_bar_shown_on(true, true);
+
+        let raw = serde_json::to_string(&appearance).unwrap();
+        let reloaded: Appearance = serde_json::from_str(&raw).unwrap();
+        assert!(!reloaded.menu_bar_shown_on(false));
+        assert!(reloaded.menu_bar_shown_on(true));
     }
 }
